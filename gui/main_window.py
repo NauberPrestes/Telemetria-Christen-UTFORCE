@@ -352,7 +352,7 @@ class GridConfigDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Cibix Motorsport")
+        self.setWindowTitle("Telemetria Utforce")
         self.setGeometry(100, 100, 1600, 900)
         
         # Inicialmente, definir o tema escuro
