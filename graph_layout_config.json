@@ -1,17 +1,11 @@
 {
-    "ecu_push_to_pass_on": {
+    "DHT - Temperatura": {
         "row": 0,
         "column": 0,
         "rowSpan": 1,
         "colSpan": 1
     },
-    "ecu_push_to_pass_remain": {
-        "row": 0,
-        "column": 1,
-        "rowSpan": 1,
-        "colSpan": 1
-    },
-    "ecu_push_to_pass_timer": {
+    "DHT - Umidade": {
         "row": 1,
         "column": 0,
         "rowSpan": 1,

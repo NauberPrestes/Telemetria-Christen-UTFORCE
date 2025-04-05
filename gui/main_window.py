@@ -18,7 +18,7 @@ import json
 import os
 import time
 import math
-from data.data_simulator import DataSimulator  # Importar o DataSimulator
+from data.api_service import APIService
 
 
 class DraggablePlotWidget(PlotWidget):
@@ -429,10 +429,28 @@ class MainWindow(QMainWindow):
         self.car_monitoring_page = CarMonitoringView()
         self.tabs.addTab(self.car_monitoring_page, "Monitoramento do Carro")
         
-        # Instanciar e iniciar o DataSimulator
-        self.data_simulator = DataSimulator()
-        self.data_simulator.data_generated.connect(self.update_graphs_with_data)
-        self.data_simulator.start()
+        # Load API configuration
+        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'config', 'api_config.json')
+        try:
+            with open(config_path, 'r') as f:
+                self.api_config = json.load(f)
+        except FileNotFoundError:
+            QMessageBox.warning(self, "Configuration Error", 
+                              "API configuration file not found. Using default settings.")
+            self.api_config = {
+                "api_endpoint": "YOUR_API_ENDPOINT_HERE",
+                "update_rate": 0.1,
+                "retry_delay": 1.0
+            }
+        
+        # Initialize API service with configuration
+        self.api_service = APIService(
+            api_url=self.api_config["api_endpoint"],
+            update_rate=self.api_config["update_rate"],
+            retry_delay=self.api_config["retry_delay"]
+        )
+        self.api_service.data_generated.connect(self.update_graphs_with_data)
+        self.api_service.start()
         
         # Caminho para o arquivo de configuração
         self.config_file = "graph_layout_config.json"
@@ -587,7 +605,7 @@ class MainWindow(QMainWindow):
         self.save_grid_configuration(config)
         
         # Parar o DataSimulator
-        self.data_simulator.stop()
+        self.api_service.stop()
         
         super().closeEvent(event)
     

@@ -3,7 +3,7 @@
 import sys
 from PySide6.QtWidgets import QApplication
 from gui.main_window import MainWindow
-from data.data_simulator import DataSimulator
+from data.api_service import APIService
 from data.data_processor import DataProcessor
 
 def main():
@@ -18,73 +18,122 @@ def main():
             font-size: 14px;
         }
         QCheckBox::indicator {
-            background-color: #4A4A4A;
-            border: 1px solid #FFFFFF;
-            width: 15px;
-            height: 15px;
+            width: 18px;
+            height: 18px;
+        }
+        QCheckBox::indicator:unchecked {
+            border: 2px solid #666666;
+            background-color: #2E2E2E;
+            border-radius: 3px;
         }
         QCheckBox::indicator:checked {
-            background-color: #FFFFFF;
+            border: 2px solid #666666;
+            background-color: #4CAF50;
+            border-radius: 3px;
+        }
+        QCheckBox::indicator:checked::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 4px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
         }
         QPushButton {
-            background-color: #4A4A4A;
+            background-color: #4CAF50;
+            color: white;
             border: none;
-            padding: 5px 10px;
-            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
         }
         QPushButton:hover {
-            background-color: #606060;
+            background-color: #45a049;
         }
-        QComboBox {
-            background-color: #4A4A4A;
-            border: 1px solid #FFFFFF;
-            color: #FFFFFF;
+        QPushButton:pressed {
+            background-color: #3d8b40;
         }
         QLabel {
             color: #FFFFFF;
         }
-        QListWidget {
-            background-color: #3A3A3A;
-            border: 1px solid #FFFFFF;
+        QTabWidget::pane {
+            border: 1px solid #666666;
+            background-color: #2E2E2E;
+        }
+        QTabBar::tab {
+            background-color: #3E3E3E;
             color: #FFFFFF;
+            padding: 8px 16px;
+            border: 1px solid #666666;
+            border-bottom: none;
         }
-        QGroupBox {
-            border: 2px solid #4A4A4A;
-            border-radius: 5px;
-            margin-top: 10px;
+        QTabBar::tab:selected {
+            background-color: #4CAF50;
         }
-        QGroupBox::title {
-            subcontrol-origin: margin;
-            subcontrol-position: top center; /* Ajuste conforme necessário */
-            padding: 0 3px;
+        QTableWidget {
+            background-color: #2E2E2E;
+            color: #FFFFFF;
+            gridline-color: #666666;
+            border: 1px solid #666666;
+        }
+        QTableWidget::item {
+            padding: 5px;
+        }
+        QTableWidget::item:selected {
+            background-color: #4CAF50;
+        }
+        QHeaderView::section {
+            background-color: #3E3E3E;
+            color: #FFFFFF;
+            padding: 5px;
+            border: 1px solid #666666;
+        }
+        QSpinBox {
+            background-color: #2E2E2E;
+            color: #FFFFFF;
+            border: 1px solid #666666;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        QSpinBox::up-button, QSpinBox::down-button {
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 2px;
+        }
+        QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+            background-color: #45a049;
+        }
+        QSpinBox::up-button:pressed, QSpinBox::down-button:pressed {
+            background-color: #3d8b40;
+        }
+        QMenu {
+            background-color: #2E2E2E;
+            color: #FFFFFF;
+            border: 1px solid #666666;
+        }
+        QMenu::item {
+            padding: 5px 20px;
+        }
+        QMenu::item:selected {
+            background-color: #4CAF50;
+        }
+        QColorDialog {
+            background-color: #2E2E2E;
+        }
+        QColorDialog QLabel {
             color: #FFFFFF;
         }
     """)
     
-    # Inicializa a janela principal
+    # Criar e mostrar a janela principal
     window = MainWindow()
     window.show()
     
-    # Inicializa o simulador de dados
-    simulator = DataSimulator()
-    
-    # Inicializa o processador de dados e conecta ao GUI
-    processor = DataProcessor()
-    processor.data_updated.connect(window.update_graphs_with_data)
-    
-    # Conecta o simulador ao processador
-    simulator.data_generated.connect(processor.process_data)
-    
-    # Inicia a simulação
-    simulator.start()
-    
-    # Executa o aplicativo
-    exit_code = app.exec()
-    
-    # Para a simulação ao fechar o aplicativo
-    simulator.stop()
-    
-    sys.exit(exit_code)
+    # Iniciar o loop de eventos
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
